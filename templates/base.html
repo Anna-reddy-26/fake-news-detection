@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Fake Detection System{% endblock %}</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% block extra_head %}{% endblock %}
+</head>
+
+<body>
+    <header>
+        <div class="container flex justify-between items-center">
+            <a href="/" class="logo flex items-center gap-2">
+                <i class="fas fa-robot fa-lg" style="color: var(--primary);"></i>
+                <span style="font-weight: 700; font-size: 1.25rem; color: white;">FDS <span
+                        style="color: var(--primary);">.AI</span></span>
+            </a>
+            <nav class="nav flex gap-4 items-center">
+                <a href="/" class="nav-link {% if request.path == '/' %}active{% endif %}">
+                    <i class="fas fa-home"></i> Home
+                </a>
+
+                {% if current_user.is_authenticated %}
+                <a href="/detect" class="nav-link {% if request.path == '/detect' %}active{% endif %}">
+                    <i class="fas fa-search"></i> Detect
+                </a>
+                <a href="/history" class="nav-link {% if request.path == '/history' %}active{% endif %}">
+                    <i class="fas fa-history"></i> History
+                </a>
+                {% endif %}
+
+                <a href="/about" class="nav-link {% if request.path == '/about' %}active{% endif %}">
+                    <i class="fas fa-info-circle"></i> About
+                </a>
+
+                <button id="theme-toggle" class="btn btn-secondary" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;"
+                    title="Toggle Theme (Cyber/Human)">
+                    <i class="fas fa-robot"></i>
+                </button>
+
+                {% if current_user.is_authenticated %}
+                <div class="flex items-center gap-2"
+                    style="margin-left: 1rem; border-left: 1px solid rgba(255,255,255,0.1); padding-left: 1rem;">
+                    <span style="color: var(--text-muted); font-size: 0.9rem;">{{ current_user.name }}</span>
+                    <a href="{{ url_for('logout') }}" class="btn btn-secondary"
+                        style="padding: 0.4rem 0.8rem; font-size: 0.85rem;">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </a>
+                </div>
+                {% else %}
+                <div class="flex items-center gap-2" style="margin-left: 1rem;">
+                    <a href="{{ url_for('login') }}"
+                        class="nav-link {% if request.path == '/login' %}active{% endif %}">Login</a>
+                    <a href="{{ url_for('register') }}" class="btn btn-primary"
+                        style="padding: 0.4rem 1rem; font-size: 0.9rem;">Register</a>
+                </div>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+
+    <main class="container mt-8 fade-in">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Fake Detection System. All rights reserved.</p>
+            <p style="font-size: 0.8rem; opacity: 0.6;">Powered by Advanced AI Analysis</p>
+        </div>
+    </footer>
+
+    {% block scripts %}{% endblock %}
+
+    <!-- Firebase Analytics -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDybEfWSVYpY-hntFZTpcwAEVR6YTPzsPo",
+            authDomain: "fake-identity-b4f0e.firebaseapp.com",
+            projectId: "fake-identity-b4f0e",
+            storageBucket: "fake-identity-b4f0e.firebasestorage.app",
+            messagingSenderId: "87518869012",
+            appId: "1:87518869012:web:669fd0bd1db07f2d315901",
+            measurementId: "G-JSPSBD75F7"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        console.log("Firebase Analytics Initialized 🚀");
+
+        // Theme Switcher Logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const toggleBtn = document.getElementById('theme-toggle');
+            const toggleIcon = toggleBtn.querySelector('i');
+            const html = document.documentElement;
+
+            // Check local storage
+            const savedTheme = localStorage.getItem('theme') || 'cyber';
+
+            // Apply theme
+            if (savedTheme === 'human') {
+                html.setAttribute('data-theme', 'human');
+                updateIcon('human');
+            } else {
+                html.removeAttribute('data-theme'); // Default is root/cyber
+                updateIcon('cyber');
+            }
+
+            toggleBtn.addEventListener('click', () => {
+                const currentTheme = html.getAttribute('data-theme');
+                const newTheme = currentTheme === 'human' ? 'cyber' : 'human';
+
+                if (newTheme === 'human') {
+                    html.setAttribute('data-theme', 'human');
+                } else {
+                    html.removeAttribute('data-theme');
+                }
+
+                localStorage.setItem('theme', newTheme);
+                updateIcon(newTheme);
+            });
+
+            function updateIcon(theme) {
+                if (theme === 'human') {
+                    toggleIcon.className = 'fas fa-leaf';
+                    toggleIcon.style.color = 'var(--success)';
+                } else {
+                    toggleIcon.className = 'fas fa-robot';
+                    toggleIcon.style.color = 'var(--primary)';
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

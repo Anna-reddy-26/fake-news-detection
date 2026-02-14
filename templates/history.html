@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}History - Fake Detection System{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>Analysis History</h2>
+    {% if history %}
+    <div style="overflow-x:auto;">
+    <table style="width:100%;border-collapse:collapse;margin-top:18px;">
+        <thead>
+            <tr style="background:#eef2ff;">
+                <th>ID</th>
+                <th>Type</th>
+                <th>Title</th>
+                <th>Result</th>
+                <th>Confidence</th>
+                <th>Timestamp</th>
+                <th>Risk Level</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in history %}
+            <tr>
+                <td>{{ item.id }}</td>
+                <td>
+                    <span style="padding:6px 12px;border-radius:16px;font-weight:600;{% if item.type=='news' %}background:#bee3f8;color:#2b6cb0;{% elif item.type=='image' %}background:#c6f6d5;color:#276749;{% else %}background:#fed7d7;color:#c53030;{% endif %}">
+                        {% if item.type == 'news' %}<i class="fas fa-newspaper"></i>{% elif item.type == 'image' %}<i class="fas fa-image"></i>{% else %}<i class="fas fa-video"></i>{% endif %}
+                        {{ item.type|upper }}
+                    </span>
+                </td>
+                <td>{{ item.title }}</td>
+                <td>
+                    <span style="padding:6px 12px;border-radius:16px;font-weight:600;{% if item.result=='Fake' %}background:#fed7d7;color:#c53030;{% else %}background:#c6f6d5;color:#276749;{% endif %}">{{ item.result }}</span>
+                </td>
+                <td style="font-weight:600;">{{ item.confidence }}</td>
+                <td style="font-size:0.95rem;opacity:0.8;">{{ item.timestamp }}</td>
+                <td>{{ item.risk_level }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+    {% else %}
+    <div style="text-align:center;padding:48px;color:#6b7280;">
+        <h3>No Analysis History Yet</h3>
+        <p>You haven't analyzed any content yet. Start by analyzing some content to see your history here!</p>
+        <a href="/detect" class="btn"><i class="fas fa-search"></i> Start Detection</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

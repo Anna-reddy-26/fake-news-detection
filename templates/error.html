@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error {{ error_code }} - Fake Detection System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .error-container {
+            text-align: center;
+            padding: 50px;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            max-width: 700px;
+            margin: 20px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .error-icon {
+            font-size: 8rem;
+            margin-bottom: 20px;
+        }
+        
+        .error-code {
+            font-size: 6rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #ffffff, #f0f0f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .error-message {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: white;
+        }
+        
+        .error-description {
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            opacity: 0.9;
+            line-height: 1.6;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 15px 30px;
+            background: white;
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+        }
+        
+        .btn-secondary {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+        
+        @media (max-width: 600px) {
+            .error-container {
+                padding: 30px 20px;
+            }
+            
+            .error-code {
+                font-size: 4rem;
+            }
+            
+            .error-message {
+                font-size: 1.5rem;
+            }
+            
+            .error-icon {
+                font-size: 5rem;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <div class="error-icon">
+            {% if error_code == 404 %}
+            🔍
+            {% elif error_code == 500 %}
+            ⚙️
+            {% elif error_code == 413 %}
+            📁
+            {% else %}
+            ⚠️
+            {% endif %}
+        </div>
+        
+        <div class="error-code">{{ error_code }}</div>
+        <div class="error-message">{{ error_message }}</div>
+        
+        <div class="error-description">
+            {% if error_code == 404 %}
+            The page you're looking for doesn't exist or has been moved.
+            {% elif error_code == 500 %}
+            Something went wrong on our end. We're working to fix it.
+            {% elif error_code == 413 %}
+            The file you're trying to upload is too large. Maximum size is 500MB.
+            {% else %}
+            An unexpected error occurred.
+            {% endif %}
+        </div>
+        
+        <div class="action-buttons">
+            <a href="/" class="btn">
+                <i class="fas fa-home"></i>
+                Go Home
+            </a>
+            <a href="/detect" class="btn btn-secondary">
+                <i class="fas fa-search"></i>
+                Detect Content
+            </a>
+        </div>
+    </div>
+</body>
+</html>

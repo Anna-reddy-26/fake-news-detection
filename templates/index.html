@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Fake Detection System{% endblock %}
+
+{% block content %}
+<div class="text-center mb-4">
+    <h1>Dashboard Overview</h1>
+    <p>Real-time analytics of content verification</p>
+</div>
+
+<div class="card">
+    <div class="flex justify-between items-center mb-4">
+        <h2><i class="fas fa-chart-line" style="color: var(--secondary);"></i> System Status</h2>
+        <span class="badge badge-real">Operational</span>
+    </div>
+    <p>Welcome to the Fake Detection System (FDS). Our state-of-the-art AI models effectively distinguish between authentic and manipulated media across text, images, and video.</p>
+    
+    <div class="stats-grid">
+        <div class="stat-card">
+            <i class="fas fa-search fa-2x" style="color: var(--primary); margin-bottom: 1rem;"></i>
+            <div class="stat-value">{{ stats.total_analysis }}</div>
+            <div class="stat-label">Total Analyses</div>
+        </div>
+        <div class="stat-card">
+            <i class="fas fa-exclamation-triangle fa-2x" style="color: var(--danger); margin-bottom: 1rem;"></i>
+            <div class="stat-value">{{ stats.fake_detected }}</div>
+            <div class="stat-label">Fakes Detected</div>
+        </div>
+        <div class="stat-card">
+            <i class="fas fa-bullseye fa-2x" style="color: var(--success); margin-bottom: 1rem;"></i>
+            <div class="stat-value">{{ stats.accuracy_rate }}</div>
+            <div class="stat-label">System Accuracy</div>
+        </div>
+    </div>
+</div>
+
+<div class="grid" style="grid-template-columns: 1fr 1fr; gap: 2rem;">
+    <div class="card">
+        <h3><i class="fas fa-bolt" style="color: var(--warning);"></i> Quick Start</h3>
+        <p>Ready to verify some content? Upload your files or paste text immediately for instant analysis.</p>
+        <div class="mt-4">
+            <a href="/detect" class="btn btn-primary" style="width: 100%;">
+                <i class="fas fa-rocket"></i> Start New Analysis
+            </a>
+        </div>
+    </div>
+    
+    <div class="card">
+        <h3><i class="fas fa-history" style="color: var(--text-muted);"></i> Recent Activity</h3>
+        {% if stats.recent_activity %}
+        <div class="mt-2" style="display: flex; flex-direction: column; gap: 0.75rem;">
+            {% for activity in stats.recent_activity %}
+            <div class="flex justify-between items-center" style="padding: 0.5rem; background: rgba(255,255,255,0.03); border-radius: var(--radius-sm);">
+                <div class="flex items-center gap-2">
+                    <i class="fas {% if activity.type == 'news' %}fa-newspaper{% elif activity.type == 'image' %}fa-image{% else %}fa-video{% endif %}" style="color: var(--text-muted);"></i>
+                    <span>{{ activity.type|capitalize }} Analysis</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="badge {% if activity.result == 'Fake' %}badge-fake{% else %}badge-real{% endif %}" style="font-size: 0.7rem;">{{ activity.result }}</span>
+                    <span style="font-size: 0.8rem; color: var(--text-muted);">{{ activity.time }}</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p>No recent activity found.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

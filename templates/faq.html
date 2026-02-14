@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}FAQ - Fake Detection System{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width:800px;margin:auto;">
+    <h2>Frequently Asked Questions</h2>
+    <p>Find answers to common questions about our technology</p>
+    <div style="margin-top:2rem;">
+        {% for faq in faqs %}
+        <div class="card"
+            style="padding:0;overflow:hidden;margin-bottom:1rem;cursor:pointer;box-shadow:none;border:1px solid rgba(255,255,255,0.05);"
+            onclick="this.classList.toggle('active')">
+            <div
+                style="padding:1.2rem 1.5rem;background:rgba(255,255,255,0.02);display:flex;justify-content:space-between;align-items:center;">
+                <h3 style="margin:0;font-size:1.1rem;color:var(--text-main);">{{ faq.question }}</h3>
+                <i class="fas fa-chevron-down" style="transition:transform 0.3s;color:var(--secondary);"></i>
+            </div>
+            <div class="faq-answer"
+                style="padding:0 1.5rem;max-height:0;overflow:hidden;transition:all 0.3s;color:var(--text-muted);">
+                <p style="padding:1.2rem 0;">{{ faq.answer }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <script>
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('click', () => {
+                const answer = card.querySelector('.faq-answer');
+                const icon = card.querySelector('.fa-chevron-down');
+                if (answer.style.maxHeight && answer.style.maxHeight !== '0px') {
+                    answer.style.maxHeight = '0px';
+                    icon.style.transform = 'rotate(0deg)';
+                } else {
+                    answer.style.maxHeight = '500px';
+                    icon.style.transform = 'rotate(180deg)';
+                }
+            });
+        });
+    </script>
+</div>
+<div style="text-align:center;margin-top:2rem;">
+    <p>Still have questions?</p>
+    <a href="mailto:support@fakedetectionsystem.ai" class="btn"><i class="fas fa-envelope"></i> Contact Support</a>
+</div>
+{% endblock %}

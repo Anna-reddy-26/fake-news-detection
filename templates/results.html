@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+
+{% block title %}Analysis Results - Fake Detection System{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 900px;">
+    <div class="mb-4">
+        <a href="/detect" class="btn btn-secondary" style="display: inline-flex; width: auto;">
+            <i class="fas fa-arrow-left"></i> Analyze Another
+        </a>
+    </div>
+
+    <div class="card fade-in">
+        <div class="flex justify-between items-center mb-4 border-b pb-4"
+            style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+            <div class="flex items-center gap-4">
+                <div style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 50%;">
+                    <i class="fas {% if result.media_type == 'news' %}fa-newspaper{% elif result.media_type == 'image' %}fa-image{% else %}fa-video{% endif %} fa-2x"
+                        style="color: var(--primary);"></i>
+                </div>
+                <div>
+                    <h2 style="margin: 0; font-size: 1.5rem;">Analysis Report</h2>
+                    <p style="margin: 0; font-size: 0.9rem;">ID: <span
+                            style="font-family: monospace; color: var(--secondary);">{{ result.analysis_id }}</span></p>
+                </div>
+            </div>
+            <div class="text-right">
+                <div style="font-size: 0.9rem; color: var(--text-muted);">{{ result.timestamp }}</div>
+            </div>
+        </div>
+
+        <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 2rem;">
+            <!-- Main Result Column -->
+            <div>
+                <div class="mb-4">
+                    <div
+                        style="font-size: 0.9rem; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.5rem;">
+                        Prediction</div>
+                    <div
+                        style="font-size: 2.5rem; font-weight: 800; color: {% if result.prediction == 'Fake' %}var(--danger){% else %}var(--success){% endif %};">
+                        {{ result.prediction|upper }}
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <div
+                        style="font-size: 0.9rem; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.5rem;">
+                        Confidence Score</div>
+                    <div style="background: rgba(255,255,255,0.1); padding: 3px; border-radius: 999px;">
+                        <div
+                            style="background: linear-gradient(90deg, var(--secondary), var(--primary)); width: {{ result.confidence * 100 }}%; height: 10px; border-radius: 999px;">
+                        </div>
+                    </div>
+                    <div style="margin-top: 0.5rem; font-weight: 600;">{{ (result.confidence * 100)|round(1) }}%
+                        Confidence</div>
+                </div>
+
+                <div class="mb-4">
+                    <div
+                        style="font-size: 0.9rem; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.5rem;">
+                        Risk Assessment</div>
+                    <span class="badge" style="
+                        background: {% if 'High' in result.risk_level %}rgba(239, 68, 68, 0.2){% elif 'Medium' in result.risk_level %}rgba(245, 158, 11, 0.2){% else %}rgba(16, 185, 129, 0.2){% endif %};
+                        color: {% if 'High' in result.risk_level %}var(--danger){% elif 'Medium' in result.risk_level %}var(--warning){% else %}var(--success){% endif %};
+                        padding: 0.5rem 1rem; font-size: 1rem;
+                    ">
+                        {{ result.risk_level }}
+                    </span>
+                </div>
+            </div>
+
+            <!-- Details Column -->
+            <div style="background: rgba(0,0,0,0.2); padding: 1.5rem; border-radius: var(--radius-md);">
+                <h4
+                    style="border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 0.5rem; margin-bottom: 1rem;">
+                    Analysis Summary</h4>
+
+                <p><strong>Explanation:</strong><br> {{ result.explanation }}</p>
+
+                {% if result.file_url %}
+                <div class="mt-4">
+                    <strong>Analyzed Media:</strong><br>
+                    <a href="{{ result.file_url }}" target="_blank" class="btn btn-secondary"
+                        style="margin-top: 0.5rem; width: 100%; font-size: 0.9rem;">
+                        <i class="fas fa-external-link-alt"></i> View Original File
+                    </a>
+                </div>
+                {% endif %}
+
+                {% if result.input_preview %}
+                <div class="mt-4">
+                    <strong>Analyzed Text Snippet:</strong>
+                    <div
+                        style="font-style: italic; color: var(--text-muted); font-size: 0.9rem; border-left: 2px solid var(--secondary); padding-left: 0.5rem; margin-top: 0.5rem;">
+                        "{{ result.input_preview }}"
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Technical Details Collapsible -->
+        <div class="mt-8">
+            <h3 style="font-size: 1.25rem;">Technical Insights</h3>
+            <div class="analysis-preview">
+                <pre
+                    style="color: #cbd5e1; white-space: pre-wrap;">{{ result.analysis_details | tojson(indent=2) }}</pre>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

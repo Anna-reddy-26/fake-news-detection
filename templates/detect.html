@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block title %}Detect Content - Fake Detection System{% endblock %}
+
+{% block content %}
+<div class="text-center mb-4">
+    <h1>Content Analysis</h1>
+    <p>Upload media or paste text to verify authenticity</p>
+</div>
+
+<div class="card" style="max-width: 800px; margin: 0 auto;">
+    {% if error %}
+    <div
+        style="background: rgba(239, 68, 68, 0.1); border: 1px solid var(--danger); padding: 1rem; border-radius: var(--radius-sm); margin-bottom: 1.5rem; color: #fca5a5; display: flex; align-items: center; gap: 0.75rem;">
+        <i class="fas fa-exclamation-circle"></i>
+        <span>{{ error }}</span>
+    </div>
+    {% endif %}
+
+    <form method="post" action="/detect" enctype="multipart/form-data">
+        <div class="mb-4">
+            <label for="analysis_type"
+                style="display: block; margin-bottom: 0.5rem; color: var(--text-main); font-weight: 500;">Select Content
+                Type</label>
+            <div style="position: relative;">
+                <i class="fas fa-layer-group"
+                    style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-muted);"></i>
+                <select id="analysis_type" name="analysis_type" onchange="toggleInputs()" style="padding-left: 2.5rem;">
+                    <option value="news">📰 News / Article Text</option>
+                    <option value="image">🖼️ Image Forensics</option>
+                    <option value="video">🎬 Video Deepfake Detection</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="text-block" class="fade-in">
+            <label for="text"
+                style="display: block; margin-bottom: 0.5rem; color: var(--text-main); font-weight: 500;">Paste Text
+                Content</label>
+            <textarea id="text" name="text" rows="8"
+                placeholder="Paste the full article text or headline here for analysis..."
+                style="resize: vertical;"></textarea>
+            <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem;">
+                <i class="fas fa-info-circle"></i> Minimum 10 characters required. The model looks for sensationalism,
+                grammar patterns, and source verifiability.
+            </div>
+        </div>
+
+        <div id="file-block" style="display:none;" class="fade-in">
+            <label for="file"
+                style="display: block; margin-bottom: 0.5rem; color: var(--text-main); font-weight: 500;">Upload Media
+                File</label>
+            <div style="border: 2px dashed rgba(255,255,255,0.1); padding: 2rem; border-radius: var(--radius-md); text-align: center; transition: all 0.2s;"
+                ondragover="this.style.borderColor='var(--primary)'; event.preventDefault();"
+                ondragleave="this.style.borderColor='rgba(255,255,255,0.1)';"
+                ondrop="event.preventDefault(); document.getElementById('file').files = event.dataTransfer.files;">
+                <i class="fas fa-cloud-upload-alt fa-3x" style="color: var(--primary); margin-bottom: 1rem;"></i>
+                <input type="file" id="file" name="file" style="display: none;" onchange="updateFileName(this)">
+                <p id="file-label" style="margin-bottom: 1rem;">Drag & drop your file here or</p>
+                <button type="button" class="btn btn-secondary" onclick="document.getElementById('file').click()">Browse
+                    Files</button>
+                <p id="file-name-display" style="margin-top: 1rem; font-weight: 600; color: var(--secondary);"></p>
+            </div>
+            <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 1rem; text-align: center;">
+                Supported: Images (JPG, PNG, WEBP) • Videos (MP4, AVI, MOV)
+            </div>
+        </div>
+
+        <div class="mt-8 text-center">
+            <button type="submit" class="btn btn-primary" style="width: 100%; font-size: 1.1rem; padding: 1rem;">
+                <i class="fas fa-microchip"></i> Analyze Content
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function toggleInputs() {
+        const t = document.getElementById('analysis_type').value;
+        const textBlock = document.getElementById('text-block');
+        const fileBlock = document.getElementById('file-block');
+
+        if (t === 'news') {
+            textBlock.style.display = 'block';
+            fileBlock.style.display = 'none';
+        } else {
+            textBlock.style.display = 'none';
+            fileBlock.style.display = 'block';
+        }
+    }
+
+    function updateFileName(input) {
+        if (input.files && input.files.length > 0) {
+            document.getElementById('file-name-display').textContent = 'Selected: ' + input.files[0].name;
+        } else {
+            document.getElementById('file-name-display').textContent = '';
+        }
+    }
+
+    // Initialize
+    toggleInputs();
+</script>
+{% endblock %}

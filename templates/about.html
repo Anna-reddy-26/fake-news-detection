@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}About - Fake Detection System{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width:900px;margin:auto;">
+    <h2>About Our Mission</h2>
+    <p>Empowering the digital world with truth and transparency</p>
+    <div style="margin-top:2rem;display:grid;grid-template-columns:2fr 1fr;gap:2rem;">
+        <div>
+            <h3><i class="fas fa-shield-alt" style="color:#667eea;"></i> The Platform</h3>
+            <p>The Fake Detection System (FDS) is an advanced AI-powered platform designed to identify manipulated media in real-time. By leveraging deep learning models trained on vast datasets of fake and authentic content, we provide users with actionable probability scores to assess the credibility of news, images, and videos.</p>
+            <div style="background:rgba(99,102,241,0.08);padding:1rem 1.5rem;border-left:4px solid #667eea;border-radius:0 8px 8px 0;margin-top:1.5rem;">
+                <h4 style="color:#667eea;">Why it matters</h4>
+                <p>In the age of generative AI and deepfakes, distinguishing truth from fabrication is harder than ever. We aim to restore trust in digital media through explainable AI.</p>
+            </div>
+            <h3 style="margin-top:2rem;"><i class="fas fa-cogs" style="color:#764ba2;"></i> How It Works</h3>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1.5rem;">
+                <div style="text-align:center;">
+                    <div style="background:rgba(255,255,255,0.05);width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;">
+                        <i class="fas fa-newspaper fa-lg" style="color:#667eea;"></i>
+                    </div>
+                    <h4>NLP Analysis</h4>
+                    <p style="font-size:0.85rem;">Detects sensationalism patterns and semantic inconsistency in text.</p>
+                </div>
+                <div style="text-align:center;">
+                    <div style="background:rgba(255,255,255,0.05);width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;">
+                        <i class="fas fa-image fa-lg" style="color:#764ba2;"></i>
+                    </div>
+                    <h4>ELA Forensics</h4>
+                    <p style="font-size:0.85rem;">Analyzes Error Level Analysis and noise artifacts in images.</p>
+                </div>
+                <div style="text-align:center;">
+                    <div style="background:rgba(255,255,255,0.05);width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;">
+                        <i class="fas fa-video fa-lg" style="color:#667eea;"></i>
+                    </div>
+                    <h4>Frame Consistency</h4>
+                    <p style="font-size:0.85rem;">Checks temporal coherence and facial landmarks in video streams.</p>
+                </div>
+            </div>
+        </div>
+        <div>
+            <h3>Team & Research</h3>
+            <p>Developed by a dedicated team of researchers and engineers.</p>
+            <div style="margin-top:1rem;">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+                    <div style="width:32px;height:32px;background:#eef2ff;border-radius:50%;display:flex;align-items:center;justify-content:center;">👨‍💻</div>
+                    <div>
+                        <div style="font-weight:600;">Research Team</div>
+                        <div style="font-size:0.85rem;color:#6b7280;">Model Development</div>
+                    </div>
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;">
+                    <div style="width:32px;height:32px;background:#eef2ff;border-radius:50%;display:flex;align-items:center;justify-content:center;">🛡️</div>
+                    <div>
+                        <div style="font-weight:600;">Security Team</div>
+                        <div style="font-size:0.85rem;color:#6b7280;">Infrastructure</div>
+                    </div>
+                </div>
+            </div>
+            <div style="margin-top:2rem;padding-top:1rem;border-top:1px solid #e2e8f0;">
+                <h4>Contact Us</h4>
+                <a href="mailto:support@fakedetectionsystem.ai" class="btn" style="width:100%;margin-top:8px;"><i class="fas fa-envelope"></i> Email Support</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
